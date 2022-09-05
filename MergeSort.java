@@ -68,22 +68,15 @@ public class MergeSort {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("\nEnter size of the array: ");
 
-        int size = scanner.nextInt();
-        int list[] = new int[size];
-
-        System.out.println("\nEnter the numbers:");
-        for (int i = 0; i < size; i++) {
-            System.out.print("Element " + (i + 1) + ": ");
-            list[i] = scanner.nextInt();
-        }
+        TakeInput input = new TakeInput();
+        int[] list = input.getArray(scanner);
 
         scanner.close();
 
         MergeSort m = new MergeSort();
 
-        m.sort(list, 0, size - 1);
+        m.sort(list, 0, list.length - 1);
 
         System.out.println("\nSorted list is:");
         for (int i : list) {

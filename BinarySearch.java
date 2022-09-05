@@ -19,23 +19,14 @@ public class BinarySearch {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\nEnter size of the array: ");
 
-        int size = scanner.nextInt();
-        int list[] = new int[size];
-
-        System.out.println("\nEnter the numbers in sorted order");
-        for (int i = 0; i < size; i++) {
-            System.out.print("Element " + (i + 1) + ": ");
-            list[i] = scanner.nextInt();
-        }
-
-        System.out.println("\nEnter the number to find: ");
-        int x = scanner.nextInt();
+        TakeInput tInput = new TakeInput();
+        int[] list = tInput.getArray(scanner);
+        int x = tInput.getInt(scanner);
         scanner.close();
 
         BinarySearch b = new BinarySearch();
-        int position = b.search(list, x, 0, size - 1);
+        int position = b.search(list, x, 0, list.length - 1);
 
         if (position == -1)
             System.out.println("\nNot Found\n");
