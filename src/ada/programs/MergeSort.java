@@ -1,13 +1,15 @@
-import java.util.Scanner;
+package ada.programs;
 
-public class MergeSort {
+import ada.utils.Algorithm;
+
+public class MergeSort extends Algorithm {
 
     /**
      * Merges two subarrays of numbers[].
      * First subarray is numbers[l..m]
      * Second subarray is numbers[m+1..r]
      */
-    void merge(int numbers[], int left, int mid, int right) {
+    private void merge(int numbers[], int left, int mid, int right) {
         int sizeLeft = mid - left + 1;
         int sizeRight = right - mid;
 
@@ -52,7 +54,11 @@ public class MergeSort {
 
     // sort function that sorts arr[l..r] using
     // merge()
-    void sort(int arr[], int l, int r) {
+    public void sort(int[] list) {
+        sort(list, 0, list.length - 1);
+    }
+
+    private void sort(int arr[], int l, int r) {
         if (l < r) {
             // Find the middle point
             int m = l + (r - l) / 2;
@@ -63,27 +69,6 @@ public class MergeSort {
 
             // Merge the sorted halves
             merge(arr, l, m, r);
-        }
-    }
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        TakeInput input = new TakeInput();
-        int[] list = input.getArray(scanner);
-
-        scanner.close();
-
-        MergeSort m = new MergeSort();
-
-        m.sort(list, 0, list.length - 1);
-
-        System.out.println("\nSorted list is:");
-        for (int i : list) {
-            if (i != list[list.length - 1])
-                System.out.print(i + ", ");
-            else
-                System.out.print(i + "\n");
         }
     }
 }

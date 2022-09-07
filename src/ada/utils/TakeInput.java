@@ -1,8 +1,10 @@
+package ada.utils;
+
 import java.util.Scanner;
 
 public class TakeInput {
 
-    int[] getArray(Scanner scanner) {
+    public int[] getIntArray(Scanner scanner) {
         System.out.println("\nEnter size of the array: ");
 
         int size = scanner.nextInt();
@@ -17,8 +19,8 @@ public class TakeInput {
         return list;
     }
 
-    int getInt(Scanner scanner) {
-        System.out.println("\nEnter the number to find: ");
+    public int getInt(Scanner scanner) {
+        System.out.println("\nEnter an integer: ");
         int x = scanner.nextInt();
         return x;
     }

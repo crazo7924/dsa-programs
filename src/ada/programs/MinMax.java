@@ -1,7 +1,9 @@
-import java.util.Scanner;
+package ada.programs;
 
-public class MinMax {
-    int[] find(int[] list, int start, int end) {
+import ada.utils.Algorithm;
+
+public final class MinMax extends Algorithm {
+    public int[] find(int[] list, int start, int end) {
         int min, max;
         if (start == end) { // small problem with 1 elements
             max = min = list[start];
@@ -29,16 +31,5 @@ public class MinMax {
                 max = minmax2[1];
         }
         return new int[] { min, max };
-    }
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        TakeInput input = new TakeInput();
-        MinMax m = new MinMax();
-        System.out.println("\nEnter elements of the list: ");
-        int[] list = input.getArray(scanner);
-        int[] minmax = m.find(list, 0, list.length - 1);
-        System.out.println("Minimum is: " + minmax[0] + " and Maximum is " + minmax[1]);
-        scanner.close();
     }
 }

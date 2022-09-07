@@ -1,7 +1,12 @@
-import java.util.Scanner;
+package ada.programs;
 
-public class QuickSort {
-    public void sort(int[] list, int low, int high) {
+import ada.utils.Algorithm;
+
+public final class QuickSort extends Algorithm {
+    public void sort(int[] list) {
+        sort(list, 0, list.length);
+    }
+    private void sort(int[] list, int low, int high) {
         if (high - low <= 0)
             return;
         int pivot = list[high];
@@ -35,25 +40,5 @@ public class QuickSort {
 
         // return the position from where partition is done
         return (i + 1);
-    }
-
-    private void swap(int[] list, int first, int second) {
-        int temp = list[first];
-        list[first] = list[second];
-        list[second] = temp;
-    }
-
-    public static void main(String[] args) {
-        TakeInput input = new TakeInput();
-        Scanner scanner = new Scanner(System.in);
-        QuickSort quick = new QuickSort();
-        int[] list = input.getArray(scanner);
-
-        quick.sort(list, 0, list.length - 1);
-
-        System.out.println("\nSorted list:");
-        for (int i : list)
-            System.out.print(i + " ");
-        System.out.println();
     }
 }
