@@ -1,8 +1,6 @@
 package ada.programs;
 
-import ada.utils.Algorithm;
-
-public final class MinMax extends Algorithm {
+public final class MinMax {
     public int[] find(int[] list, int start, int end) {
         int min, max;
         if (start == end) { // small problem with 1 elements

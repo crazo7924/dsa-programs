@@ -1,8 +1,8 @@
 package ada.programs;
 
-import ada.utils.Algorithm;
+import ada.utils.Sortable;
 
-public final class BubbleSort extends Algorithm{
+public final class BubbleSort implements Sortable {
     @Override
     public void sort(int[] list) {
         for (int i = list.length - 1; i > 0; i--) {

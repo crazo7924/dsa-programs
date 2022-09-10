@@ -1,8 +1,9 @@
 package ada.programs;
 
-import ada.utils.Algorithm;
+import ada.utils.Sortable;
+import ada.utils.Utils;
 
-public final class SelectionSort extends Algorithm {
+public final class SelectionSort implements Sortable {
 
     public void sort(int list[]) {
         int length = list.length;
@@ -15,7 +16,7 @@ public final class SelectionSort extends Algorithm {
                 if (list[j] < list[min])
                     min = j;
 
-            swap(list, min, i);
+            Utils.swap(list, min, i);
         }
     }
 }

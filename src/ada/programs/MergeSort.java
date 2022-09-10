@@ -1,8 +1,10 @@
 package ada.programs;
 
-import ada.utils.Algorithm;
+import ada.utils.Sortable;
 
-public class MergeSort extends Algorithm {
+public class MergeSort implements Sortable {
+
+    int comparisons;
 
     /**
      * Merges two subarrays of numbers[].
@@ -14,12 +16,7 @@ public class MergeSort extends Algorithm {
         int sizeRight = right - mid;
 
         // Instantiate two temporary arrays for the halves
-        int L[] = new int[sizeLeft];
-        int R[] = new int[sizeRight];
-
-        // Copy over the two halves in those temporary arrays
-        System.arraycopy(numbers, left, L, 0, sizeLeft);
-        System.arraycopy(numbers, mid + 1, R, 0, sizeRight);
+        int output[] = new int[numbers.length];
 
         // Initial indexes of first and second subarrays
         int i = 0, j = 0;
@@ -27,39 +24,35 @@ public class MergeSort extends Algorithm {
         // Initial index of merged subarray array
         int k = left;
         while (i < sizeLeft && j < sizeRight) {
-            if (L[i] <= R[j]) {
-                numbers[k] = L[i];
-                i++;
-            } else {
-                numbers[k] = R[j];
-                j++;
-            }
-            k++;
+            if (numbers[i] < numbers[j])
+                output[k++] = numbers[i++];
+            else
+                output[k++] = numbers[j++];
         }
 
         /* Copy remaining elements of L[] if any */
         while (i < sizeLeft) {
-            numbers[k] = L[i];
-            i++;
-            k++;
+            output[k++] = numbers[i++];
         }
 
         /* Copy remaining elements of R[] if any */
         while (j < sizeRight) {
-            numbers[k] = R[j];
-            j++;
-            k++;
+            output[k++] = numbers[j++];
         }
+
+        numbers = output;
     }
 
     // sort function that sorts arr[l..r] using
     // merge()
     public void sort(int[] list) {
         sort(list, 0, list.length - 1);
+        System.out.println("\nComparisons performed: " + comparisons);
     }
 
     private void sort(int arr[], int l, int r) {
         if (l < r) {
+            comparisons++;
             // Find the middle point
             int m = l + (r - l) / 2;
 

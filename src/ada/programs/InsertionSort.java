@@ -1,8 +1,9 @@
 package ada.programs;
 
-import ada.utils.Algorithm;
+import ada.utils.Sortable;
+import ada.utils.Utils;
 
-public final class InsertionSort extends Algorithm {
+public final class InsertionSort implements Sortable {
 
     public int[] insert(int[] list, int x) {
         int[] list2 = new int[list.length + 1];
@@ -22,7 +23,7 @@ public final class InsertionSort extends Algorithm {
                 if (list[j] < list[min])
                     min = j;
 
-            swap(list, min, i);
+            Utils.swap(list, min, i);
         }
     }
 }

@@ -8,23 +8,13 @@ import ada.programs.MergeSort;
 import ada.programs.MinMax;
 import ada.programs.QuickSort;
 import ada.programs.SelectionSort;
-import ada.utils.Algorithm;
-import ada.utils.TakeInput;
+import ada.utils.Utils;
 
 public class Main {
-    static void printIntArray(int list[]) {
-        for (int i : list) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        TakeInput input = new TakeInput();
         int list[], x, result, choice = 9;
-        Algorithm algorithm;
 
         while (choice != 0) {
 
@@ -47,75 +37,77 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    list = input.getIntArray(scanner);
-                    x = input.getInt(scanner);
-                    algorithm = new BinarySearch();
-                    result = algorithm.search(list, x);
+                    list = Utils.readIntArray(scanner);
+                    x = Utils.readInt(scanner);
+
+                    BinarySearch binary = new BinarySearch();
+
+                    result = binary.search(list, x);
                     if (result == -1)
                         System.out.println("\nNot Found");
                     else
                         System.out.println("\nFound at position" + (result + 1));
                     break;
                 case 2:
-                    list = input.getIntArray(scanner);
-                    x = input.getInt(scanner);
-                    algorithm = new LinearSearch();
-                    result = algorithm.search(list, x);
+                    list = Utils.readIntArray(scanner);
+                    x = Utils.readInt(scanner);
+                    LinearSearch linear = new LinearSearch();
+                    result = linear.search(list, x);
                     if (result == -1)
                         System.out.println("\nNot Found");
                     else
                         System.out.println("\nFound at position " + (result + 1));
                     break;
                 case 3:
-                    list = input.getIntArray(scanner);
-                    algorithm = new BubbleSort();
-                    algorithm.sort(list);
-                    printIntArray(list);
+                    list = Utils.readIntArray(scanner);
+                    BubbleSort bubble = new BubbleSort();
+                    bubble.sort(list);
+                    Utils.printIntArray(list);
                     break;
                 case 4:
                     list = new int[1];
                     InsertionSort insertionSort = new InsertionSort();
                     for (int i = 0; i < list.length; i++) {
-                        int element = input.getInt(scanner);
+                        int element = Utils.readInt(scanner);
                         list = insertionSort.insert(list, element);
                         insertionSort.sort(list);
                         System.out.println("\nAfter inserting " + element);
-                        printIntArray(list);
+                        Utils.printIntArray(list);
                     }
                     break;
                 case 5:
-                    list = input.getIntArray(scanner);
-                    algorithm = new MergeSort();
-                    algorithm.sort(list);
-                    printIntArray(list);
+                    list = Utils.readIntArray(scanner);
+                    MergeSort merge = new MergeSort();
+                    merge.sort(list);
+                    Utils.printIntArray(list);
                     break;
                 case 6:
-                    list = input.getIntArray(scanner);
-                    algorithm = new QuickSort();
-                    algorithm.sort(list);
-                    printIntArray(list);
+                    list = Utils.readIntArray(scanner);
+                    QuickSort quick = new QuickSort();
+                    quick.sort(list);
+                    Utils.printIntArray(list);
                     break;
                 case 7:
-                    list = input.getIntArray(scanner);
-                    algorithm = new SelectionSort();
-                    algorithm.sort(list);
-                    printIntArray(list);
+                    list = Utils.readIntArray(scanner);
+                    SelectionSort selection = new SelectionSort();
+                    selection.sort(list);
+                    Utils.printIntArray(list);
                     break;
                 case 8:
-                    list = input.getIntArray(scanner);
+                    list = Utils.readIntArray(scanner);
                     MinMax minMax = new MinMax();
                     int[] output = minMax.find(list, 0, list.length - 1);
                     System.out.println("\nMin is " + output[0]);
                     System.out.println("Max is " + output[1]);
                     break;
                 case 0:
+                    scanner.close();
                     System.exit(0);
                 default:
-                    System.out.println("\nInvalid choice");
+                    System.out.println("\nInvalid choice. Try again.");
             }
 
         }
-        scanner.close();
     }
 
 }

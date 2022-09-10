@@ -1,8 +1,8 @@
 package ada.programs;
 
-import ada.utils.Algorithm;
+import ada.utils.Searchable;
 
-public final class BinarySearch extends Algorithm {
+public final class BinarySearch implements Searchable {
 
     @Override
     public int search(int sortedNumbers[], int number) {
@@ -17,6 +17,6 @@ public final class BinarySearch extends Algorithm {
             else if (number < sortedNumbers[mid])
                 high = mid - 1;
         }
-        return super.search(sortedNumbers, number);
+        return -1;
     }
 }
