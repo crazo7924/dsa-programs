@@ -1,15 +1,16 @@
-package ada.programs;
+import java.util.Scanner;
 
-import ada.utils.Sortable;
+public final class MergeSort {
 
-public class MergeSort implements Sortable {
+    private int comparisons;
 
-    int comparisons;
+    public MergeSort(int[] arr) {
+        this.arr = arr;
+    }
 
     /**
-     * Merges two subarrays of numbers[].
-     * First subarray is numbers[l..m]
-     * Second subarray is numbers[m+1..r]
+     * Merges two subarrays of numbers[]. First subarray is numbers[l..m] Second subarray is
+     * numbers[m+1..r]
      */
     private void merge(int numbers[], int left, int mid, int right) {
         int sizeLeft = mid - left + 1;
@@ -45,10 +46,12 @@ public class MergeSort implements Sortable {
 
     // sort function that sorts arr[l..r] using
     // merge()
-    public void sort(int[] list) {
-        sort(list, 0, list.length - 1);
+    public void sort() {
+        sort(arr, 0, arr.length - 1);
         System.out.println("\nComparisons performed: " + comparisons);
     }
+
+    private int[] arr;
 
     private void sort(int arr[], int l, int r) {
         if (l < r) {
@@ -63,5 +66,23 @@ public class MergeSort implements Sortable {
             // Merge the sorted halves
             merge(arr, l, m, r);
         }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the size of array: ");
+        int size = sc.nextInt();
+        int[] a = new int[size];
+
+        System.out.println("Enter elements of array:");
+        for (int i = 0; i < size; i++) {
+            System.out.print("\nElement " + (i + 1) + ": ");
+            a[i] = sc.nextInt();
+            System.out.println();
+        }
+        MergeSort m = new MergeSort(a);
+        m.sort();
+
+        sc.close();
     }
 }

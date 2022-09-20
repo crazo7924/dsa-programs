@@ -1,6 +1,13 @@
-package ada.programs;
+import java.util.Scanner;
 
 public final class MinMax {
+
+    private int[] a;
+
+    public MinMax(int[] a) {
+        this.a = a;
+    }
+
     public int[] find(int[] list, int start, int end) {
         int min, max;
         if (start == end) { // small problem with 1 elements
@@ -28,6 +35,29 @@ public final class MinMax {
             else
                 max = minmax2[1];
         }
-        return new int[] { min, max };
+        return new int[] {min, max};
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the size of array: ");
+        int size = sc.nextInt();
+        int[] a = new int[size];
+
+        System.out.println("Enter elements of array:");
+        for (int i = 0; i < size; i++) {
+            System.out.print("\nElement " + (i + 1) + ": ");
+            a[i] = sc.nextInt();
+            System.out.println();
+        }
+
+        MinMax minMax = new MinMax(a);
+        int[] result = minMax.find();
+        System.out.println("Maximum is " + result[0] + "and Minimum is " + result[1]);
+        sc.close();
+    }
+
+    private int[] find() {
+        return find(a, 0, a.length - 1);
     }
 }

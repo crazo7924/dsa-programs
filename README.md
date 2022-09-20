@@ -9,5 +9,5 @@
 6. QuickSort
 7. SelectionSort
 8. MinMax
-9. Stack (WIP)
-10. Queue (TODO)
+9. Stack
+10. Queue
