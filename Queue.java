@@ -2,57 +2,45 @@ import java.util.Scanner;
 
 public final class Queue {
 
-    int queue[], head;
+    private Integer queue[];
+    private int head;
 
-    public Queue() {
+    public Queue(int size) {
         head = -1;
-        queue = null;
+        queue = new Integer[size];
     }
 
     public void enqueue(int input) {
         if (head == -1) {
-            head++;
-            queue = new int[1];
-            queue[head] = input;
+            System.out.println("Queue is full");
             return;
         }
 
         head++;
-
-        int temp[] = new int[head];
-        temp[0] = input;
-        System.arraycopy(queue, 0, temp, 1, head);
-
-        queue = temp;
     }
 
     public Integer dequeue() {
-        if (head == -1)
+        if (head == -1) {
+            System.out.println("Queue is empty");
             return null;
+        }
 
-        head--;
-
-        int temp[] = new int[head];
-        System.arraycopy(queue, 0, temp, 0, head);
-        queue = temp;
-
-        return queue[head];
+        queue[head] = null;
+        return queue[head--];
     }
 
     public void print() {
-        if (head == -1)
-            System.out.println("Queue is empty.");
-        else {
-            for (int i : queue) {
-                System.out.print(" " + i);
-            }
-            System.out.println();
+        System.out.println("[ ");
+        for (int i = 0; i <= head; i++) {
+            System.out.print(" " + queue[i]);
         }
+        System.out.println(" ]");
     }
 
     public static void main(String[] args) {
-        Queue q = new Queue();
         Scanner sc = new Scanner(System.in);
+        System.out.print("Enter size of queue: ");
+        Queue q = new Queue(sc.nextInt());
         int choice;
         do {
             q.print();
@@ -69,8 +57,9 @@ public final class Queue {
                 q.print();
             } else if (choice == 2) {
                 Integer output = q.dequeue();
-                if (output != null)
-                    System.out.println("de-queued values is " + output);
+                if (output == null)
+                    continue;
+                System.out.println("De-queued element is " + output);
                 q.print();
             }
         } while (choice != 0);

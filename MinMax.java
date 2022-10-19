@@ -53,7 +53,7 @@ public final class MinMax {
 
         MinMax minMax = new MinMax(a);
         int[] result = minMax.find();
-        System.out.println("Maximum is " + result[0] + "and Minimum is " + result[1]);
+        System.out.println("Maximum is " + result[1] + " and Minimum is " + result[0]);
         sc.close();
     }
 

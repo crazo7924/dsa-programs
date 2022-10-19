@@ -15,35 +15,34 @@ public final class QuickSort {
     private void sort(int[] list, int low, int high) {
         if (high - low <= 0)
             return;
-        int pivot = list[high];
-        int partition = partition(list, low, high, pivot);
-        sort(list, low, partition - 1);
-        sort(list, partition + 1, high);
+        int key = list[low];
+        int j = partition(list, low, high, key);
+        sort(list, low, j - 1);
+        sort(list, j + 1, high);
     }
 
     private int partition(int[] list, int low, int high, int pivot) {
 
         // pointer for greater element
-        int i = low - 1;
+        int key = list[low];
+        int i = low;
+        int j = high;
 
-        // traverse through all the elements
-        // compare each element with the pivot
-        for (int j = low; j < high; j++) {
-            if (list[j] < pivot) {
+        while (i < j) {
+            while (list[i++] > key);
+            while (list[j--] < key);
 
-                // if element smaller than pivot is found
-                // swap it with the greater element pointed by i
+            if (i < j)
                 swap(i, j);
-                i++;
-            }
-
         }
 
-        // swap the pivot element with the greater element specified by i
-        swap(i + 1, high);
+        if (i > j) {
+            int temp = a[j];
+            a[j] = key;
+            key = temp;
+        }
 
-        // return the position from where partition is done
-        return (i + 1);
+        return j;
     }
 
     private void swap(int i, int j) {

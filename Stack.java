@@ -2,54 +2,47 @@ import java.util.Scanner;
 
 public class Stack {
 
-    private int stack[], head;
+    private Integer stack[];
+    private int head;
 
-    public Stack() {
+    public Stack(int size) {
         head = -1;
-        stack = null;
+        stack = new Integer[size];
     }
 
     public void push(int input) {
-        if (head == -1) {
-            stack = new int[1];
-            stack[++head] = input;
+        if (head == stack.length - 1) {
+            System.out.println("Stack is full");
             return;
         }
-
-        head++;
-
-        int temp[] = new int[head];
-        temp[head] = input;
-        System.arraycopy(stack, 0, temp, 0, head);
-        stack = temp;
+        stack[++head] = input;
     }
 
     public Integer pop() {
-        if (head == -1)
+        if (head == -1) {
+            System.out.println("Stack is empty");
             return null;
+        }
 
-        head--;
-        int temp[] = new int[head];
-        System.arraycopy(stack, 0, temp, 0, head);
-        stack = temp;
-
-        return stack[head];
+        stack[head] = null;
+        return stack[head--];
     }
 
     public void print() {
-        if (head == -1)
-            System.out.println("Queue is empty.");
-        else {
-
+        System.out.print("[ ");
+        for (int i = 0; i <= head; i++) {
+            System.out.print(" " + stack[i]);
         }
+        System.out.println(" ]");
     }
 
     public static void main(String[] args) {
-        Stack stack = new Stack();
         Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter size of stack: ");
+        Stack stack = new Stack(sc.nextInt());
         int choice;
         do {
-            stack.print();
             System.out.println("1. Push");
             System.out.println("2. Pop");
             System.out.println("0. Exit");
@@ -57,15 +50,19 @@ public class Stack {
             System.out.print("\nEnter choice of operation: ");
             choice = sc.nextInt();
             if (choice == 1) {
-                System.out.print("Enter a number to enqueue: ");
+                System.out.print("Enter a number to push: ");
                 int input = sc.nextInt();
                 stack.push(input);
                 stack.print();
             } else if (choice == 2) {
                 Integer output = stack.pop();
-                if (output != null)
-                    System.out.println("de-queued values is " + output);
+                if (output == null)
+                    continue;
+
+                System.out.println("popped element is " + output);
                 stack.print();
+            } else {
+                System.out.println("Invalid choice");
             }
         } while (choice != 0);
         sc.close();
