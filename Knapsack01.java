@@ -58,11 +58,7 @@ public class Knapsack01 {
         return sack;
     }
 
-    public void addItem(int weight, int price, int position) {
-        items.add(new Item(weight, price, position));
-    }
-
-    public static class Item {
+    public class Item {
         public Item(int weight, int price, int position) {
             this.position = position;
             this.weight = weight;
@@ -96,9 +92,10 @@ public class Knapsack01 {
             System.out.print("Weight: ");
             int w = scanner.nextInt();
             System.out.println();
-            knapsackByProfit.items.add(new Item(weight, p, i + 1));
-            knapsackByWeight.items.add(new Item(weight, p, i + 1));
-            knapsackbyRatio.items.add(new Item(weight, p, i + 1));
+            Item item = knapsackByProfit.new Item(w, p, i + 1);
+            knapsackByProfit.items.add(item);
+            knapsackByWeight.items.add(item);
+            knapsackbyRatio.items.add(item);
         }
 
         scanner.close();
@@ -124,7 +121,8 @@ public class Knapsack01 {
             totalProfitByRatio += item.profit;
         }
 
-        System.out.println("\n\nDescending Order of profit.\nTotal profit = " + totalProfitByWeight);
+        System.out
+                .println("\n\nDescending Order of profit.\nTotal profit = " + totalProfitByWeight);
         System.out.println("\nAscending Order of weight.\nTotal profit = " + totalProfitByProfit);
         System.out.println(
                 "\nDescending Order of profit/weight ratio.\nTotal profit = " + totalProfitByRatio);
