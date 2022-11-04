@@ -1,145 +1,62 @@
-// Java Program to Implement Dijkstra's Algorithm
-// Using Priority Queue
+// Dijkstra's Algorithm in Java
 
-// Importing utility classes
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Set;
-
-// Main class DPQ
 public class Dijkstra {
 
-    class Node implements Comparator<Node> {
-
-        int node;
-        int cost;
-
-        public Node(int node, int cost) {
-            this.node = node;
-            this.cost = cost;
+    public static void traverse(int[][] graph, int source) {
+        int count = graph.length;
+        boolean[] visitedVertex = new boolean[count];
+        int[] distance = new int[count];
+        for (int i = 0; i < count; i++) {
+            visitedVertex[i] = false;
+            distance[i] = Integer.MAX_VALUE;
         }
 
-        public Node() {}
+        // Distance of self loop is zero
+        distance[source] = 0;
+        for (int i = 0; i < count; i++) {
 
-        @Override
-        public int compare(Node first, Node second) {
-            return first.cost - second.cost;
+            // Update the distance between neighbouring vertex and source vertex
+            int u = findMinDistance(distance, visitedVertex);
+            visitedVertex[u] = true;
+
+            // Update all the neighbouring vertex distances
+            for (int v = 0; v < count; v++) {
+                if (!visitedVertex[v] && graph[u][v] != 0
+                        && (distance[u] + graph[u][v] < distance[v])) {
+                    distance[v] = distance[u] + graph[u][v];
+                }
+            }
         }
+        for (int i = 0; i < distance.length; i++) {
+            System.out
+                    .println(String.format("Distance from %s to %s is %s", source, i, distance[i]));
+        }
+
     }
 
-    private int dist[];
-    private Set<Integer> settled;
-    private PriorityQueue<Node> pq;
-
-    // Number of vertices
-    private int V;
-    List<List<Node>> adj;
-
-    public Dijkstra(int V, List<List<Node>> adjecencyList) {
-        this.V = V;
-        this.adj = adjecencyList;
-        dist = new int[V];
-        settled = new HashSet<Integer>();
-        pq = new PriorityQueue<Node>(V, new Node());
+    // Finding the minimum distance
+    private static int findMinDistance(int[] distance, boolean[] visitedVertex) {
+        int minDistance = Integer.MAX_VALUE;
+        int minDistanceVertex = -1;
+        for (int i = 0; i < distance.length; i++) {
+            if (!visitedVertex[i] && distance[i] < minDistance) {
+                minDistance = distance[i];
+                minDistanceVertex = i;
+            }
+        }
+        return minDistanceVertex;
     }
 
-    public void dijkstra(int src) {
-
-
-        for (int i = 0; i < V; i++)
-            dist[i] = Integer.MAX_VALUE;
-
-        // Add source node to the priority queue
-        pq.add(new Node(src, 0));
-
-        // Distance to the source is 0
-        dist[src] = 0;
-
-        while (settled.size() != V) {
-
-            // Terminating condition check when
-            // the priority queue is empty, return
-            if (pq.isEmpty())
-                return;
-
-            // Removing the minimum distance node
-            // from the priority queue
-            int u = pq.remove().node;
-
-            // Adding the node whose distance is
-            // finalized
-            if (settled.contains(u))
-
-                // Continue keyword skips execution for
-                // following check
-                continue;
-
-            // We don't have to call e_Neighbors(u)
-            // if u is already present in the settled set.
-            settled.add(u);
-
-            processNeighbours(u);
-        }
-    }
-
-    /**
-     * 
-     * @param u the node of which the neighbours are processed
-     */
-    private void processNeighbours(int u) {
-
-        int edgeDistance = -1;
-        int newDistance = -1;
-
-        // All the neighbors of v
-        for (int i = 0; i < adj.get(u).size(); i++) {
-            Node v = adj.get(u).get(i);
-
-            // If current node has already been processed, skip it.
-            if (!settled.contains(v.node))
-                continue;
-            edgeDistance = v.cost;
-            newDistance = dist[u] + edgeDistance;
-
-            // If new distance is cheaper in cost
-            if (newDistance < dist[v.node])
-                dist[v.node] = newDistance;
-
-            // Add the current node to the queue
-            pq.add(new Node(v.node, dist[v.node]));
-        }
-    }
-
-    public static void main(String args[]) {
-
-        if(args.length != 2) return;
-
-        int V = Integer.parseInt(args[1]);
-        int source = Integer.parseInt(args[2]);
-
-        // Adjacency list representation of the
-        // connected edges by declaring List class object
-        // Declaring object of type List<Node>
-        List<List<Node>> adj = new ArrayList<List<Node>>();
-
-        // Initialize list for every node
-        for (int i = 0; i < V; i++) {
-            List<Node> item = new ArrayList<Node>();
-            adj.add(item);
-        }
-
-        // Calculating the single source shortest path
-        Dijkstra d = new Dijkstra(V, adj);
-        d.dijkstra(source);
-
-        // Printing the shortest path to all the nodes
-        // from the source node
-        System.out.println("The shortest path from node :");
-
-        for (int i = 0; i < d.dist.length; i++)
-            System.out.println(source + " to " + i + " is " + d.dist[i]);
+    public static void main(String[] args) {
+        int graph[][] = new int[][] {
+                {0, 0, 1, 2, 0, 0, 0},
+                {0, 0, 2, 0, 0, 3, 0},
+                {1, 2, 0, 1, 3, 0, 0},
+                {2, 0, 1, 0, 0, 0, 1},
+                {0, 0, 3, 0, 0, 2, 0},
+                {0, 3, 0, 0, 2, 0, 1},
+                {0, 0, 0, 1, 0, 1, 0}
+            };
+        Dijkstra.traverse(graph, 0);
     }
 }
