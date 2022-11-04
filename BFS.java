@@ -10,16 +10,7 @@ import java.util.Scanner;
 
 public class BFS {
 
-    class Node {
-        char label;
-        boolean visited;
-
-        Node(char label) {
-            this.label = label;
-        }
-    }
-
-    Map<Character, List<Node>> graph;
+    Map<Character, List<Character>> graph;
 
     BFS() {
         graph = new HashMap<>();
@@ -28,6 +19,7 @@ public class BFS {
 
     public static void main(String[] args) throws FileNotFoundException {
 
+        if(args.length != 2) return;
         FileInputStream file = new FileInputStream(args[0]);
         Scanner scanner = new Scanner(file);
         BFS bfs = new BFS();
@@ -35,25 +27,29 @@ public class BFS {
             String line = scanner.nextLine();
             char label = line.charAt(0);
             String row[] = line.substring(2).split(" ");
-            List<Node> neighbours = new ArrayList<>();
+            List<Character> neighbours = new ArrayList<>();
             for (String s : row) {
-                neighbours.add(bfs.new Node(s.charAt(0)));
+                neighbours.add(s.charAt(0));
             }
             bfs.graph.put(label, neighbours);
         }
         scanner.close();
-        bfs.search('5');
+        bfs.search(args[1].charAt(0));
         System.out.println(bfs.queue);
     }
 
     Queue<Character> queue;
 
     void search(char root) {
-        for (Node node : graph.get(root)) {
-            if (node.visited || queue.contains(node.label))
+        if(graph.get(root) == null) return;
+        if (!queue.contains(root))
+            queue.add(root);
+        for (Character node : graph.get(root)) {
+            if(node == null) continue;
+            if (queue.contains(node))
                 continue;
-            queue.add(node.label);
-            search(node.label);
+            queue.add(node);
+            search(node);
         }
     }
 }

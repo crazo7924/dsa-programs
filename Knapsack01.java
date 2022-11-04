@@ -45,9 +45,7 @@ public class Knapsack01 {
     private int currentWeight = 0;
 
     public void fillKnapsack(List<Item> items) {
-        for (Item item : items) {
-            this.items.add(item);
-        }
+        this.items.addAll(items);
     }
 
     public List<Item> getSack() {
@@ -64,7 +62,7 @@ public class Knapsack01 {
         items.add(new Item(weight, price, position));
     }
 
-    public class Item {
+    public static class Item {
         public Item(int weight, int price, int position) {
             this.position = position;
             this.weight = weight;
@@ -85,12 +83,11 @@ public class Knapsack01 {
         Scanner scanner = new Scanner(System.in);
         System.out.print("\nEnter weight of knapsack: ");
         int weight = scanner.nextInt();
-        Knapsack01 knapsack1 = new Knapsack01(weight, byProfit);
-        Knapsack01 knapsack2 = new Knapsack01(weight, byWeight);
-        Knapsack01 knapsack3 = new Knapsack01(weight, byPWRatio);
+        Knapsack01 knapsackByProfit = new Knapsack01(weight, byProfit);
+        Knapsack01 knapsackByWeight = new Knapsack01(weight, byWeight);
+        Knapsack01 knapsackbyRatio = new Knapsack01(weight, byPWRatio);
         System.out.print("\nEnter number of items: ");
         int count = scanner.nextInt();
-        List<Item> inputItems = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
             System.out.println("Item " + (i + 1));
@@ -99,41 +96,37 @@ public class Knapsack01 {
             System.out.print("Weight: ");
             int w = scanner.nextInt();
             System.out.println();
-            inputItems.add(knapsack1.new Item(w, p, i + 1));
+            knapsackByProfit.items.add(new Item(weight, p, i + 1));
+            knapsackByWeight.items.add(new Item(weight, p, i + 1));
+            knapsackbyRatio.items.add(new Item(weight, p, i + 1));
         }
 
         scanner.close();
 
         System.out.println("\nKnapsack contents are: ");
-        knapsack1.fillKnapsack(inputItems);
-        knapsack2.fillKnapsack(inputItems);
-        knapsack3.fillKnapsack(inputItems);
-        List<Item> sack1 = knapsack1.getSack();
-        List<Item> sack2 = knapsack2.getSack();
-        List<Item> sack3 = knapsack3.getSack();
 
-        int totalProfit1 = 0, totalProfit2 = 0, totalProfit3 = 0;
-        for (Item item : sack1) {
+        int totalProfitByWeight = 0, totalProfitByProfit = 0, totalProfitByRatio = 0;
+        for (Item item : knapsackByWeight.getSack()) {
             System.out.println(item);
-            totalProfit1 += item.profit;
+            totalProfitByWeight += item.profit;
         }
 
         System.out.println();
 
-        for (Item item : sack2) {
+        for (Item item : knapsackByProfit.getSack()) {
             System.out.println(item);
-            totalProfit2 += item.profit;
+            totalProfitByProfit += item.profit;
         }
         System.out.println();
 
-        for (Item item : sack3) {
+        for (Item item : knapsackbyRatio.getSack()) {
             System.out.println(item);
-            totalProfit3 += item.profit;
+            totalProfitByRatio += item.profit;
         }
 
-        System.out.println("\n\nDescending Order of profit.\nTotal profit = " + totalProfit1);
-        System.out.println("\nAscending Order of weight.\nTotal profit = " + totalProfit2);
+        System.out.println("\n\nDescending Order of profit.\nTotal profit = " + totalProfitByWeight);
+        System.out.println("\nAscending Order of weight.\nTotal profit = " + totalProfitByProfit);
         System.out.println(
-                "\nDescending Order of profit/weight ratio.\nTotal profit = " + totalProfit3);
+                "\nDescending Order of profit/weight ratio.\nTotal profit = " + totalProfitByRatio);
     }
 }
