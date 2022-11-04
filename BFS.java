@@ -19,7 +19,8 @@ public class BFS {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        if(args.length != 2) return;
+        if (args.length != 2)
+            return;
         FileInputStream file = new FileInputStream(args[0]);
         Scanner scanner = new Scanner(file);
         BFS bfs = new BFS();
@@ -41,11 +42,13 @@ public class BFS {
     Queue<Character> queue;
 
     void search(char root) {
-        if(graph.get(root) == null) return;
+        if (graph.get(root) == null)
+            return;
         if (!queue.contains(root))
             queue.add(root);
         for (Character node : graph.get(root)) {
-            if(node == null) continue;
+            if (node == null)
+                continue;
             if (queue.contains(node))
                 continue;
             queue.add(node);

@@ -43,13 +43,16 @@ public class Kruskals {
     }
 
     void traverse() {
-        System.out.println("Input is:");
+        System.out.println("\tInput");
         System.out.println("From\tTo\tWeight");
         for (Edge edge : edgeList) {
             System.out.println(edge);
         }
-        System.out.println();
+
+        System.out.println("\n\tOutput");
+
         Collections.sort(edgeList, comparator);
+
         for (Edge edge : edgeList) {
             if (noCyclePresent(edgeList, edge))
                 MST.add(edge);
@@ -58,7 +61,6 @@ public class Kruskals {
 
         System.out.println("From\tTo\tWeight");
         for (Edge edge : MST) {
-
             System.out.println(edge);
         }
     }
@@ -81,7 +83,7 @@ public class Kruskals {
             String line = scanner.nextLine();
             char from = line.charAt(0);
             char to = line.charAt(2);
-            int weight = Integer.valueOf(line.charAt(4));
+            int weight = Integer.parseInt(line.substring(4));
             kruskals.addEdge(from, to, weight);
         }
         scanner.close();
