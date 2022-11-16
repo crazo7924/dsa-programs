@@ -1,7 +1,4 @@
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -9,13 +6,13 @@ import java.util.Scanner;
 public class Kruskals {
 
     class Edge {
-        char from;
-        char to;
-        int weight;
+        int from;
+        int to;
+        int cost;
         boolean visited;
 
-        Edge(char from, char to, int weight) {
-            this.weight = weight;
+        Edge(int from, int to, int weight) {
+            this.cost = weight;
             this.to = to;
             this.from = from;
             visited = false;
@@ -23,17 +20,17 @@ public class Kruskals {
 
         @Override
         public String toString() {
-            return to + "\t" + from + "\t" + weight;
+            return "Cost of edge (" + from + ", " + to + ") is " + cost;
         }
     }
 
     List<Edge> edgeList;
     List<Edge> MST;
-    Comparator<Edge> comparator = new Comparator<Edge>() {
+    Comparator<Edge> byCost = new Comparator<Edge>() {
 
         @Override
         public int compare(Edge first, Edge second) {
-            return first.weight - second.weight;
+            return first.cost - second.cost;
         }
     };
 
@@ -43,15 +40,14 @@ public class Kruskals {
     }
 
     void traverse() {
-        System.out.println("\tInput");
-        System.out.println("From\tTo\tWeight");
+        System.out.println("\nInput is");
         for (Edge edge : edgeList) {
             System.out.println(edge);
         }
 
-        System.out.println("\n\tOutput");
+        System.out.println("\nOutput is");
 
-        Collections.sort(edgeList, comparator);
+        edgeList.sort(byCost);
 
         for (Edge edge : edgeList) {
             if (noCyclePresent(edgeList, edge))
@@ -59,7 +55,6 @@ public class Kruskals {
             edge.visited = true;
         }
 
-        System.out.println("From\tTo\tWeight");
         for (Edge edge : MST) {
             System.out.println(edge);
         }
@@ -75,23 +70,26 @@ public class Kruskals {
         return true;
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        FileInputStream file = new FileInputStream(args[0]);
-        Scanner scanner = new Scanner(file);
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         Kruskals kruskals = new Kruskals();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            char from = line.charAt(0);
-            char to = line.charAt(2);
-            int weight = Integer.parseInt(line.substring(4));
-            kruskals.addEdge(from, to, weight);
+        System.out.print("Enter number of edges: ");
+        int edges = scanner.nextInt();
+
+        for (int i = 0; i < edges; i++) {
+            System.out.print("Enter destination of edge from " + (i + 1) + " : ");
+            int dest = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Enter weight for edge (" + (i + 1) + ", " + dest + ") : ");
+            int weight = scanner.nextInt();
+            scanner.nextLine();
+
+            kruskals.edgeList.add(kruskals.new Edge(i + 1, dest, weight));
+            System.out.println();
         }
         scanner.close();
 
         kruskals.traverse();
-    }
-
-    void addEdge(char from, char to, int weight) {
-        edgeList.add(new Edge(from, to, weight));
     }
 }

@@ -2,9 +2,7 @@ import java.util.Scanner;
 
 public final class BinarySearch {
 
-    private int[] a;
-
-    public int search(int number) {
+    public int search(int[] a, int number) {
         int low = 0;
         int high = a.length - 1;
         while (low < high) {
@@ -19,34 +17,33 @@ public final class BinarySearch {
         return -1;
     }
 
-    public void init(int[] a) {
-        this.a = a;
-    }
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Enter the size of array: ");
         int size = sc.nextInt();
-        BinarySearch b = new BinarySearch();
+        sc.nextLine();
+
         System.out.println("Enter elements of SORTED array:");
-        int a[] = new int[size];
+        int numbers[] = new int[size];
         for (int i = 0; i < size; i++) {
             System.out.print("\nElement " + (i + 1) + ": ");
-            a[i] = sc.nextInt();
-            System.out.println();
+            numbers[i] = sc.nextInt();
+            sc.nextLine();
         }
-        b.init(a);
+
+        BinarySearch binary = new BinarySearch();
 
         System.out.print("\nEnter number to search: ");
-        int n = sc.nextInt();
+        int x = sc.nextInt();
+        sc.nextLine();
 
-        int output = b.search(n);
+        int output = binary.search(numbers, x);
+
         if (output == -1)
             System.out.println("Not found.");
         else
-            System.out.println("Found " + n + " at index " + (output + 1));
-
+            System.out.println("Found " + x + " at position " + (output + 1));
         sc.close();
     }
 }

@@ -2,17 +2,7 @@ import java.util.Scanner;
 
 public final class QuickSort {
 
-    private int[] a;
-
-    public void sort() {
-        sort(a, 0, a.length - 1);
-    }
-
-    public QuickSort(int[] a) {
-        this.a = a;
-    }
-
-    private void sort(int[] list, int low, int high) {
+    public void sort(int[] list, int low, int high) {
         if (high - low <= 0)
             return;
         int key = list[low];
@@ -32,50 +22,43 @@ public final class QuickSort {
             while (list[i++] > key);
             while (list[j--] < key);
 
-            if (i < j)
-                swap(i, j);
+            if (i < j) {
+                int temp = list[i];
+                list[i] = list[j];
+                list[j] = temp;
+            }
         }
 
         if (i > j) {
-            int temp = a[j];
-            a[j] = key;
+            int temp = list[j];
+            list[j] = key;
             key = temp;
         }
 
         return j;
     }
 
-    private void swap(int i, int j) {
-        int temp = a[i];
-        a[i] = a[j];
-        a[j] = temp;
-    }
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the size of array: ");
         int size = sc.nextInt();
+        sc.nextLine();
         int[] a = new int[size];
 
         System.out.println("Enter elements of array:");
         for (int i = 0; i < size; i++) {
             System.out.print("\nElement " + (i + 1) + ": ");
             a[i] = sc.nextInt();
-            System.out.println();
+            sc.nextLine();
         }
-
-        QuickSort qSort = new QuickSort(a);
-        qSort.sort();
-        System.out.println("After sorting: ");
-        qSort.print();
 
         sc.close();
-    }
 
-    private void print() {
-        for (int i : a) {
+        QuickSort quick = new QuickSort();
+        quick.sort(a, 0, a.length - 1);
+        System.out.println("After sorting: ");
+        for (int i : a)
             System.out.print(" " + i);
-        }
         System.out.println();
     }
 }

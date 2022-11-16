@@ -2,50 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Warshall {
-    public static void DFS(Graph graph, byte[][] C, int root, int descendant) {
-        for (int child : graph.adjList.get(descendant)) {
-            if (C[root][child] == 0) {
-
-                C[root][child] = 1;
-                DFS(graph, C, root, child);
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the number of edges initially");
-        int n = sc.nextInt();
-
-        List<Edge> edges = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            System.out.println("Edge " + i + 1);
-            System.out.println("Enter source");
-            int source = sc.nextInt();
-            System.out.println("Enter destination");
-            int destination = sc.nextInt();
-            edges.add(new Edge(source, destination));
-        }
-
-        sc.close();
-
-        final int N = 4;
-        Graph graph = new Graph(edges, N);
-        byte[][] C = new byte[N][N];
-        System.out.println("TRANSITIVE CLOSURE:-\n");
-        for (int v = 0; v < N; v++) {
-            C[v][v] = 1;
-            DFS(graph, C, v, v);
-            for (int u = 0; u < N; u++)
-                System.out.print(C[v][u] + " ");
-            System.out.println();
-        }
-    }
-}
-
-
 class Edge {
     int source, dest;
 
@@ -70,6 +26,51 @@ class Graph {
             int dest = edges.get(i).dest;
 
             adjList.get(src).add(dest);
+        }
+    }
+}
+
+
+public class Warshall {
+    public static void DFS(Graph graph, boolean[][] C, int root, int descendant) {
+        for (int child : graph.adjList.get(descendant)) {
+            if (!C[root][child]) {
+                C[root][child] = true;
+                DFS(graph, C, root, child);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of initial edges: ");
+        int n = scanner.nextInt();
+        scanner.nextLine();
+
+        List<Edge> edges = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            System.out.print("Source of edge " + (i + 1) + ": ");
+            int source = scanner.nextInt();
+            scanner.nextLine();
+            System.out.print("It\'s destination: ");
+            int destination = scanner.nextInt();
+            scanner.nextLine();
+            edges.add(new Edge(source, destination));
+        }
+
+        scanner.close();
+
+        final int steps = n + 1;
+        Graph graph = new Graph(edges, steps);
+        boolean[][] C = new boolean[steps][steps];
+        System.out.println("Transitive Closure: \n");
+        for (int v = 0; v < steps; v++) {
+            C[v][v] = true;
+            DFS(graph, C, v, v);
+            for (int u = 0; u < steps; u++)
+                System.out.print(C[v][u] + " ");
+            System.out.println();
         }
     }
 }

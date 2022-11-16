@@ -1,68 +1,45 @@
-import java.util.Scanner;
-
-public final class Queue {
-
+public class Queue {
     private Integer queue[];
-    private int head;
+    private int front;
 
     public Queue(int size) {
-        head = -1;
+        front = -1;
         queue = new Integer[size];
     }
 
     public void enqueue(int input) {
-        if (head == -1) {
+        if (front == queue.length - 1) {
             System.out.println("Queue is full");
             return;
         }
+        front++;
+        for (int i = front; i > 0; i--)
+            queue[i] = queue[i - 1]; // shifts all one place forward.
+        queue[0] = input;
+        System.out.println("Enqueued " + input);
 
-        head++;
     }
 
     public Integer dequeue() {
-        if (head == -1) {
+        if (front == -1) {
             System.out.println("Queue is empty");
             return null;
         }
-
-        queue[head] = null;
-        return queue[head--];
+        int output = queue[front];
+        queue[front--] = null;
+        System.out.println("Dequeued " + output);
+        return output;
     }
 
-    public void print() {
-        System.out.println("[ ");
-        for (int i = 0; i <= head; i++) {
-            System.out.print(" " + queue[i]);
-        }
-        System.out.println(" ]");
-    }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter size of queue: ");
-        Queue q = new Queue(sc.nextInt());
-        int choice;
-        do {
-            q.print();
-            System.out.println("1. Enqueue");
-            System.out.println("2. Dequeue");
-            System.out.println("0. Exit");
-
-            System.out.print("\nEnter choice of operation: ");
-            choice = sc.nextInt();
-            if (choice == 1) {
-                System.out.print("Enter a number to enqueue: ");
-                int input = sc.nextInt();
-                q.enqueue(input);
-                q.print();
-            } else if (choice == 2) {
-                Integer output = q.dequeue();
-                if (output == null)
-                    continue;
-                System.out.println("De-queued element is " + output);
-                q.print();
-            }
-        } while (choice != 0);
-        sc.close();
+    public static void main(String args[]) {
+        Queue q = new Queue(3);
+        q.enqueue(5);
+        q.enqueue(7);
+        q.enqueue(9);
+        q.enqueue(13); // Queue is full
+        q.dequeue(); // 5
+        q.dequeue(); // 7
+        q.dequeue(); // 9
+        q.dequeue(); // Queue was already empty
     }
 }

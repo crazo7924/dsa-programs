@@ -1,58 +1,58 @@
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
 import java.util.Scanner;
 
 public class BFS {
+    int n;
+    boolean[] visited;
 
-    Map<Character, List<Character>> graph;
-
-    BFS() {
-        graph = new HashMap<>();
-        queue = new ArrayDeque<>();
+    BFS(int n) {
+        visited = new boolean[n];
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    ArrayList<Integer> traversalList = new ArrayList<>();
 
-        if (args.length != 2)
-            return;
-        FileInputStream file = new FileInputStream(args[0]);
-        Scanner scanner = new Scanner(file);
-        BFS bfs = new BFS();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            char label = line.charAt(0);
-            String row[] = line.substring(2).split(" ");
-            List<Character> neighbours = new ArrayList<>();
-            for (String s : row) {
-                neighbours.add(s.charAt(0));
+    int front = 0;
+
+    void traverse(int[][] cost_matrix, int rootNode) {
+        n = cost_matrix.length;
+        this.visited[rootNode] = true;
+        if (!traversalList.contains(rootNode))
+            traversalList.add(rootNode);
+
+        for (int i = 0; i < n; i++) {
+            if (cost_matrix[rootNode][i] != 999 && !visited[i]) {
+                if (!traversalList.contains(i))
+                    traversalList.add(i);
             }
-            bfs.graph.put(label, neighbours);
         }
-        scanner.close();
-        bfs.search(args[1].charAt(0));
-        System.out.println(bfs.queue);
+        if (traversalList.size() > front + 1)
+            traverse(cost_matrix, traversalList.get(++front));
+
     }
 
-    Queue<Character> queue;
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the number of vertices");
+        int n = scanner.nextInt();
 
-    void search(char root) {
-        if (graph.get(root) == null)
-            return;
-        if (!queue.contains(root))
-            queue.add(root);
-        for (Character node : graph.get(root)) {
-            if (node == null)
-                continue;
-            if (queue.contains(node))
-                continue;
-            queue.add(node);
-            search(node);
+        int[][] costMatrix = new int[n][n];
+
+        System.out.println("Enter the edge matrix");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                costMatrix[i][j] = scanner.nextInt();
+                if (i == j) {
+                    costMatrix[i][j] = Integer.MAX_VALUE;
+                }
+            }
         }
+
+        System.out.print("Enter the root node to beigin traversal: ");
+        int rootNode = scanner.nextInt();
+        scanner.nextLine();
+        scanner.close();
+        BFS bfs = new BFS(n);
+        bfs.traverse(costMatrix, rootNode);
+        System.out.println("Traversal order in breadth first search is " + (bfs.traversalList));
     }
 }

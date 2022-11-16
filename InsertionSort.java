@@ -21,28 +21,24 @@ public final class InsertionSort {
     public void sort() {
         int length = list.length;
 
-        // One by one move limit of unsorted subarray
         for (int i = 0; i < length - 1; i++) {
             // Find the minimum element in unsorted array
             int min = i;
             for (int j = i + 1; j < length; j++)
                 if (list[j] < list[min])
                     min = j;
-
             swap(min, i);
         }
     }
 
     public void print() {
-
-        for (int i : list) {
+        for (int i : list)
             System.out.print(" " + i);
-        }
         System.out.println();
     }
 
-    public void swap(int i, int j) {
-        int temp = list[i];
+    private void swap(int i, int j) {
+        int temp = list[j];
         list[j] = list[i];
         list[i] = temp;
     }
@@ -56,6 +52,7 @@ public final class InsertionSort {
         do {
             System.out.print("Enter element to insert: ");
             canInsert = insertionSort.insert(sc.nextInt());
+            sc.nextLine();
         } while (canInsert);
         System.out.println("The array is filled.");
         insertionSort.print();

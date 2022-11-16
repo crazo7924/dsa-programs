@@ -2,16 +2,6 @@ import java.util.Scanner;
 
 public final class MergeSort {
 
-    private int comparisons;
-
-    public MergeSort(int[] arr) {
-        this.arr = arr;
-    }
-
-    /**
-     * Merges two subarrays of numbers[]. First subarray is numbers[l..m] Second subarray is
-     * numbers[m+1..r]
-     */
     private void merge(int numbers[], int left, int mid, int right) {
         int sizeLeft = mid - left + 1;
         int sizeRight = right - mid;
@@ -44,26 +34,12 @@ public final class MergeSort {
         numbers = output;
     }
 
-    // sort function that sorts arr[l..r] using
-    // merge()
-    public void sort() {
-        sort(arr, 0, arr.length - 1);
-        System.out.println("\nComparisons performed: " + comparisons);
-    }
-
-    private int[] arr;
-
     private void sort(int arr[], int l, int r) {
         if (l < r) {
-            comparisons++;
-            // Find the middle point
             int m = l + (r - l) / 2;
-
-            // Sort first and second halves
             sort(arr, l, m);
             sort(arr, m + 1, r);
 
-            // Merge the sorted halves
             merge(arr, l, m, r);
         }
     }
@@ -80,9 +56,12 @@ public final class MergeSort {
             a[i] = sc.nextInt();
             System.out.println();
         }
-        MergeSort m = new MergeSort(a);
-        m.sort();
-
         sc.close();
+
+        MergeSort merge = new MergeSort();
+        merge.sort(a, 0, a.length - 1);
+        for (int i : a)
+            System.out.print("" + i);
+        System.out.println();
     }
 }

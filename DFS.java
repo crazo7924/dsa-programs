@@ -1,88 +1,70 @@
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-import java.util.Stack;
 
 public class DFS {
 
-    List<Node> graph;
+    final int max = 99999;
+    int n;
+    boolean[] visitedArray;
 
-    class Node {
-        char label;
-        List<Character> neighbours;
-        boolean visited;
-
-        Node(char label, List<Character> neighbours) {
-            this.label = label;
-            this.neighbours = neighbours;
-        }
+    DFS(int n) {
+        visitedArray = new boolean[n];
     }
 
-    DFS() {
-        graph = new ArrayList<>();
-        stack = new Stack<>();
-    }
+    ArrayList<Integer> traversalList = new ArrayList<>();
 
-    public static void main(String[] args) throws FileNotFoundException {
-        if (args.length != 2)
-            System.exit(1);
+    int front = 0;
 
-        FileInputStream file = new FileInputStream(args[0]);
-        Scanner scanner = new Scanner(file);
-        DFS dfs = new DFS();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            char label = line.charAt(0);
-            String row[] = line.substring(2).split(" ");
-            List<Character> neighbours = new ArrayList<>();
-            for (String s : row) {
-                neighbours.add(s.charAt(0));
+    void traverse(int[][] cost_matrix, int rootNode) {
+        n = cost_matrix.length;
+        this.visitedArray[rootNode] = true;
+        traversalList.add(rootNode);
+        if (someAreUnvisited(visitedArray)) {
+            for (int i = 0; i < n; i++) {
+                if (cost_matrix[rootNode][i] != max && !visitedArray[i]) {
+                    traverse(cost_matrix, i);
+                }
             }
-            dfs.graph.add(dfs.new Node(label, neighbours));
         }
+    }
+
+    boolean someAreUnvisited(boolean[] arr) {
+        for (boolean x : arr) {
+            if (x == false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the number of vertices");
+        int n = scanner.nextInt();
+        scanner.nextLine();
+
+        int[][] cost_matrix = new int[n][n];
+        DFS dfs = new DFS(n);
+        System.out.println("Enter the edge matrix. " + dfs.max + " is for not connected.");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                cost_matrix[i][j] = scanner.nextInt();
+                if (i == j) {
+                    cost_matrix[i][j] = dfs.max;
+                }
+            }
+        }
+
+        System.out.print("Enter the node to start the traversal: ");
+        int rootNode = scanner.nextInt();
+        scanner.nextLine();
         scanner.close();
-        dfs.search(args[1].charAt(0));
-        System.out.println(dfs.stack);
-    }
 
-    Stack<Character> stack;
-
-    void search(char root) {
-        Node rootNode = getNodeByLabel(root);
-        if (rootNode == null)
-            return;
-        if (!stack.contains(root))
-            stack.push(root);
-        for (Character n : rootNode.neighbours) {
-            Node node = getNodeByLabel(n);
-            if(node == null) continue;
-            if (node.visited)
-                continue;
-            if (stack.contains(n))
-                continue;
-            stack.push(n);
-            setVisited(n);
-            search(n);
-        }
-
-    }
-
-    private void setVisited(char label) {
-        for (Node node : graph) {
-            if (node.label == label) {
-                node.visited = true;
-                return;
-            }
-        }
-    }
-
-    private Node getNodeByLabel(char label) {
-        for (Node node : graph) {
-            if (node.label == label)
-                return node;
-        }
-        return null;
+        dfs.traverse(cost_matrix, rootNode);
+        System.out.println("Traversal using Depth First Search is " + (dfs.traversalList));
+        if (dfs.someAreUnvisited(dfs.visitedArray)) {
+            System.out.println("The graph is disjoint");
+        } else
+            System.out.println("All nodes are reachable");
     }
 }

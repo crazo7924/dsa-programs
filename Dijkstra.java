@@ -1,5 +1,3 @@
-// Dijkstra's Algorithm in Java
-
 public class Dijkstra {
 
     public static void traverse(int[][] graph, int source) {
@@ -28,8 +26,7 @@ public class Dijkstra {
             }
         }
         for (int i = 0; i < distance.length; i++) {
-            System.out
-                    .println(String.format("Distance from %s to %s is %s", source, i, distance[i]));
+            System.out.println("Distance from " + source + " to " + i + " is " + distance[i]);
         }
 
     }
@@ -49,14 +46,14 @@ public class Dijkstra {
 
     public static void main(String[] args) {
         int graph[][] = new int[][] {
-                {0, 0, 1, 2, 0, 0, 0},
-                {0, 0, 2, 0, 0, 3, 0},
-                {1, 2, 0, 1, 3, 0, 0},
-                {2, 0, 1, 0, 0, 0, 1},
-                {0, 0, 3, 0, 0, 2, 0},
-                {0, 3, 0, 0, 2, 0, 1},
-                {0, 0, 0, 1, 0, 1, 0}
-            };
+            {0, 0, 1, 2, 0, 0, 0},
+            {0, 0, 2, 0, 0, 3, 0},
+            {1, 2, 0, 1, 3, 0, 0},
+            {2, 0, 1, 0, 0, 0, 1},
+            {0, 0, 3, 0, 0, 2, 0},
+            {0, 3, 0, 0, 2, 0, 1},
+            {0, 0, 0, 1, 0, 1, 0}
+        };
         Dijkstra.traverse(graph, 0);
     }
 }

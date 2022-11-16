@@ -1,30 +1,31 @@
-public class FloydWarshall {
-    final static int I = 99999, V = 4;
+import java.util.Scanner;
 
-    void traverse(int graph[][]) {
-        int dist[][] = new int[V][V];
+class FloydWarshall {
+
+    static final int INFINITE = 999;
+
+    void run(int graph[][], int n) {
+        int dist[][] = new int[n][n];
         int i, j, k;
-        for (i = 0; i < V; i++)
-            for (j = 0; j < V; j++)
+        for (i = 0; i < n; i++)
+            for (j = 0; j < n; j++)
                 dist[i][j] = graph[i][j];
-        for (k = 0; k < V; k++) {
-            for (i = 0; i < V; i++) {
-                for (j = 0; j < V; j++) {
+        for (k = 0; k < n; k++) {
+            for (i = 0; i < n; i++) {
+                for (j = 0; j < n; j++) {
                     if (dist[i][k] + dist[k][j] < dist[i][j])
                         dist[i][j] = dist[i][k] + dist[k][j];
                 }
             }
         }
-        printSolution(dist);
+        printSolution(dist, n);
     }
 
-
-
-    void printSolution(int dist[][]) {
-        System.out.println("SHORTEST PATH MATRIX:-");
-        for (int i = 0; i < V; ++i) {
-            for (int j = 0; j < V; ++j) {
-                if (dist[i][j] == I)
+    void printSolution(int dist[][], int n) {
+        System.out.println("Shorest path as matrix:");
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (dist[i][j] == INFINITE)
                     System.out.print("I ");
                 else
                     System.out.print(dist[i][j] + " ");
@@ -33,11 +34,26 @@ public class FloydWarshall {
         }
     }
 
-
-
     public static void main(String[] args) {
-        int graph[][] = {{0, 5, I, 10}, {I, 0, 3, I}, {I, I, 0, 1}, {I, I, I, 0}};
-        FloydWarshall a = new FloydWarshall();
-        a.traverse(graph);
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the number of vertices");
+        int n = scanner.nextInt();
+
+        int[][] cost_matrix = new int[n][n];
+
+        System.out.println("Enter the cost matrix");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                cost_matrix[i][j] = scanner.nextInt();
+                if (i == j) {
+                    cost_matrix[i][j] = 0;
+                }
+            }
+        }
+        scanner.close();
+
+        FloydWarshall fw = new FloydWarshall();
+        fw.run(cost_matrix, n);
     }
 }
