@@ -1,68 +1,49 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class Knapsack01 {
 
-    int weight;
+    int maxWeight;
+    int totalProfit = 0;
+    List<Item> items;
+    int currentWeight = 0;
 
-    public Knapsack01(int weight, Comparator<Item> comparator) {
-        items = new PriorityQueue<>(comparator);
-        this.weight = weight;
+    public Knapsack01(int maxWeight) {
+        this.maxWeight = maxWeight;
     }
 
     static Comparator<Item> byWeight = new Comparator<Item>() {
 
         @Override
-        public int compare(Item first, Item second) {
-            return first.weight - second.weight;
+        public int compare(Item a, Item b) {
+            return a.weight - b.weight;
         }
-
     };
 
     static Comparator<Item> byProfit = new Comparator<Item>() {
 
         @Override
-        public int compare(Item first, Item second) {
-            return second.profit - first.profit;
+        public int compare(Item a, Item b) {
+            return b.profit - a.profit;
         }
-
     };
 
     static Comparator<Item> byPWRatio = new Comparator<Item>() {
 
         @Override
-        public int compare(Item first, Item second) {
-            return first.profit / first.weight - second.profit / second.weight;
+        public int compare(Item a, Item b) {
+            return (b.profit / b.weight) - (a.profit / a.weight);
         }
-
     };
 
-    PriorityQueue<Item> items;
-
-    private int currentWeight = 0;
-
-    public void fillKnapsack(List<Item> items) {
-        this.items.addAll(items);
-    }
-
-    public List<Item> getSack() {
-        List<Item> sack = new ArrayList<>();
-
-        while (currentWeight + items.peek().weight <= weight) {
-            currentWeight += items.peek().weight;
-            sack.add(items.poll());
-        }
-        return sack;
-    }
-
     public class Item {
-        public Item(int weight, int price, int position) {
+
+        public Item(int weight, int profit, int position) {
             this.position = position;
             this.weight = weight;
-            this.profit = price;
+            this.profit = profit;
         }
 
         int weight;
@@ -75,56 +56,68 @@ public class Knapsack01 {
         }
     }
 
+    public void fill(List<Item> input, Comparator<Item> comparator) {
+        items.clear();
+        for (Item item : input) {
+            if (item.weight + currentWeight > maxWeight)
+                continue;
+            items.add(item);
+            items.sort(comparator);
+            currentWeight += item.weight;
+            totalProfit += item.profit;
+        }
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("\nEnter weight of knapsack: ");
-        int weight = scanner.nextInt();
-        Knapsack01 knapsackByProfit = new Knapsack01(weight, byProfit);
-        Knapsack01 knapsackByWeight = new Knapsack01(weight, byWeight);
-        Knapsack01 knapsackbyRatio = new Knapsack01(weight, byPWRatio);
-        System.out.print("\nEnter number of items: ");
-        int count = scanner.nextInt();
+        System.out.print("\nEnter max weight of knapsack: ");
+        int maxWeight = scanner.nextInt();
+        scanner.nextLine();
 
+        Knapsack01 knapsack = new Knapsack01(maxWeight);
+
+        System.out.print("\nEnter number of items: ");
+
+        int count = scanner.nextInt();
+        scanner.nextLine();
+
+        List<Knapsack01.Item> inputItems = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             System.out.println("Item " + (i + 1));
+
             System.out.print("Price: ");
             int p = scanner.nextInt();
+            scanner.nextLine();
+
             System.out.print("Weight: ");
             int w = scanner.nextInt();
-            System.out.println();
-            Item item = knapsackByProfit.new Item(w, p, i + 1);
-            knapsackByProfit.items.add(item);
-            knapsackByWeight.items.add(item);
-            knapsackbyRatio.items.add(item);
+            scanner.nextLine();
+
+            inputItems.add(knapsack.new Item(w, p, i + 1));
         }
 
         scanner.close();
 
-        System.out.println("\nKnapsack contents are: ");
-
-        int totalProfitByWeight = 0, totalProfitByProfit = 0, totalProfitByRatio = 0;
-        for (Item item : knapsackByWeight.getSack()) {
+        knapsack.fill(inputItems, byProfit);
+        System.out.println("With descending order of profits, items are:");
+        for (Item item : knapsack.items) {
             System.out.println(item);
-            totalProfitByWeight += item.profit;
         }
+        System.out.println("and total profit is " + knapsack.totalProfit);
 
-        System.out.println();
-
-        for (Item item : knapsackByProfit.getSack()) {
+        knapsack.fill(inputItems, byWeight);
+        System.out.println("With ascending order of weights, items are:");
+        for (Item item : knapsack.items) {
             System.out.println(item);
-            totalProfitByProfit += item.profit;
         }
-        System.out.println();
+        System.out.println("and total profit is " + knapsack.totalProfit);
 
-        for (Item item : knapsackbyRatio.getSack()) {
+        knapsack.fill(inputItems, byProfit);
+
+        System.out.println("With descending order of profit/weight ratio, items are:");
+        for (Item item : knapsack.items) {
             System.out.println(item);
-            totalProfitByRatio += item.profit;
         }
-
-        System.out
-                .println("\n\nDescending Order of profit.\nTotal profit = " + totalProfitByWeight);
-        System.out.println("\nAscending Order of weight.\nTotal profit = " + totalProfitByProfit);
-        System.out.println(
-                "\nDescending Order of profit/weight ratio.\nTotal profit = " + totalProfitByRatio);
+        System.out.println("and total profit is " + knapsack.totalProfit);
     }
 }
